@@ -13,6 +13,7 @@ describe(`cube`, () => {
 
     // Users
     const cuber: anchor.web3.Keypair = anchor.web3.Keypair.generate();
+    let winner: anchor.web3.PublicKey;
     const sponsor: anchor.web3.Keypair = anchor.web3.Keypair.generate();
 
     // Sponsor info
@@ -25,6 +26,7 @@ describe(`cube`, () => {
     let cube2: anchor.web3.PublicKey;
     const CUBE_SIZE: number = 8 + 2 * (1 * 8) + 2 * (1 * 12);
     const PRIZE = new anchor.BN(1 * anchor.web3.LAMPORTS_PER_SOL);
+    let CUBE_RENT: anchor.BN;
 
     // R' U' F R' B' L2 F2 L D2 L D2 R' B2 D F2 R2 D2 R U B F' U' R U2 L' D' U' R' U' F
     // Solution: D F' L' F U B' U2 F D2 L D2 R2 L2 F2 D L2 F2 U' R2 F2 B2 D'
@@ -36,6 +38,12 @@ describe(`cube`, () => {
     };
 
     before(async () => {
+        CUBE_RENT = new anchor.BN(
+            await provider.connection.getMinimumBalanceForRentExemption(
+                CUBE_SIZE
+            )
+        );
+
         // Fund accounts
         await fund(provider.connection, cuber.publicKey);
         await fund(provider.connection, sponsor.publicKey);
@@ -49,6 +57,9 @@ describe(`cube`, () => {
         // Derive Cube address
         cube = await get_nth_cube(program.programId, sponsorData, 0);
         cube2 = await get_nth_cube(program.programId, sponsorData, 1);
+
+        // Derive winner address
+        winner = await find_pda([`WINNER`, cuber.publicKey], program.programId);
     });
 
     it(`Can peek a cube`, async () => {
@@ -256,5 +267,57 @@ describe(`cube`, () => {
         );
         const cube_data = await provider.connection.getAccountInfo(cube);
         assert.isNull(cube_data);
+
+        // Check winner data account
+        const winner_struct = await program.account.winner.fetch(winner);
+        assert.equal(
+            winner_struct.winner.toBase58(),
+            cuber.publicKey.toBase58()
+        );
+        assert.ok(winner_struct.challengesWon.eq(new anchor.BN(1)));
+        assert.ok(winner_struct.cashedPrize.eq(PRIZE.add(CUBE_RENT)));
+    });
+
+    it(`Solves another cube`, async () => {
+        const CUBER_BALANCE_I = await provider.connection.getBalance(
+            cuber.publicKey
+        );
+
+        // Call method
+        await program.methods
+            .trySolution(
+                `D F' L' F U B' U2 F D2 L D2 R2 L2 F2 D L2 F2 U' R2 F2 B2 D'`
+            )
+            .accounts({
+                cuber: cuber.publicKey,
+                cube: cube2,
+            })
+            .signers([cuber])
+            .rpc();
+
+        // Check balances got updated and Cube account is closed
+        const CUBER_BALANCE_F = await provider.connection.getBalance(
+            cuber.publicKey
+        );
+        assert.approximately(
+            CUBER_BALANCE_I + PRIZE.toNumber(),
+            CUBER_BALANCE_F,
+            2500000
+        );
+        const cube_data = await provider.connection.getAccountInfo(cube2);
+        assert.isNull(cube_data);
+
+        // Check winner data account
+        const winner_struct = await program.account.winner.fetch(winner);
+        assert.equal(
+            winner_struct.winner.toBase58(),
+            cuber.publicKey.toBase58()
+        );
+        assert.ok(winner_struct.challengesWon.eq(new anchor.BN(2)));
+        assert.ok(
+            winner_struct.cashedPrize.eq(
+                PRIZE.add(CUBE_RENT).mul(new anchor.BN(2))
+            )
+        );
     });
 });

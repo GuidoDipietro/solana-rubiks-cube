@@ -2,7 +2,7 @@ use std::{borrow::BorrowMut, str::SplitWhitespace};
 
 use anchor_lang::prelude::*;
 
-use crate::{state::*, error::Error, moves::*};
+use crate::{state::*, constants::*, error::Error, moves::*};
 
 #[derive(Accounts)]
 pub struct TrySolution<'info> {
@@ -10,10 +10,21 @@ pub struct TrySolution<'info> {
     pub cuber: Signer<'info>,
 
     #[account(
+        init_if_needed,
+        seeds = [WINNER_TAG.as_ref(), cuber.key().as_ref()],
+        bump,
+        payer = cuber,
+        space = Winner::LEN
+    )]
+    pub winner_data: Account<'info, Winner>,
+
+    #[account(
         mut,
         close = cuber
     )]
     pub cube: Account<'info, Cube>,
+
+    pub system_program: Program<'info, System>,
 }
 
 pub fn handler(ctx: Context<TrySolution>, move_string: String) -> Result<()> {
@@ -51,6 +62,14 @@ pub fn handler(ctx: Context<TrySolution>, move_string: String) -> Result<()> {
 
     // If cube is solved this succeeds
     is_cube_solved(&cube)?;
+
+    // Update winner account
+    let winner = &mut ctx.accounts.winner_data;
+    if winner.challenges_won == 0 {
+        winner.winner = ctx.accounts.cuber.key();
+    }
+    winner.challenges_won += 1;
+    winner.cashed_prize += ctx.accounts.cube.to_account_info().lamports();
 
     Ok(())
 }

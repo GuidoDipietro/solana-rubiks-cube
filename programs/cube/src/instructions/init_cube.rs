@@ -53,9 +53,11 @@ pub fn handler(ctx: Context<InitCube>, sponsor_name: String, sponsor_desc: Strin
     // Create or update sponsor
     let sponsor_data = &mut ctx.accounts.sponsor_data;
 
-    sponsor_data.owner = ctx.accounts.sponsor.key();
-    sponsor_data.name = sponsor_name;
-    sponsor_data.desc = sponsor_desc;
+    if sponsor_data.challenges_created == 0 {
+        sponsor_data.owner = ctx.accounts.sponsor.key();
+        sponsor_data.name = sponsor_name;
+        sponsor_data.desc = sponsor_desc;
+    }
     sponsor_data.challenges_created += 1;
     sponsor_data.total_fund += prize;
 

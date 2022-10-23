@@ -49,3 +49,18 @@ impl Sponsor {
         Self::MAX_DESC_LEN      // Desc
     ;
 }
+
+/// Register of someone that won
+#[account]
+pub struct Winner {
+    pub winner: Pubkey,
+    pub challenges_won: u64,
+    pub cashed_prize: u64,
+}
+impl Winner {
+    pub const LEN: usize =
+        8 +             // Discriminator
+        32 +            // One Pubkey
+        2 * 8           // Two u64
+    ;
+}
