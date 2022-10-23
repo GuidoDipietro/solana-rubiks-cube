@@ -9,4 +9,10 @@ pub enum Error {
 
     #[msg("Cube is not solved")]
     UnsolvedCube,
+
+    #[msg("The sponsor's name is too long!")]
+    SponsorNameTooLong,
+
+    #[msg("The sponsor's description is too long!")]
+    SponsorDescTooLong,
 }

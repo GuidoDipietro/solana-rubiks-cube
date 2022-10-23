@@ -20,8 +20,19 @@ export const fund = async (
     );
 };
 
+export const get_nth_cube = async (
+    programId: anchor.web3.PublicKey,
+    sponsorDataPubkey: anchor.web3.PublicKey,
+    nth: number
+) => {
+    return await find_pda(
+        [`CUBE`, sponsorDataPubkey, new anchor.BN(nth).toBuffer('le', 8)],
+        programId
+    );
+};
+
 export const find_pda = async (
-    seeds: (string | anchor.web3.PublicKey)[],
+    seeds: (string | anchor.web3.PublicKey | Buffer)[],
     programId: anchor.web3.PublicKey
 ): Promise<anchor.web3.PublicKey> => {
     const [pda, _] = await anchor.web3.PublicKey.findProgramAddress(
@@ -32,7 +43,8 @@ export const find_pda = async (
     return pda;
 };
 
-const to_buffer = (thing: string | anchor.web3.PublicKey): Buffer => {
+const to_buffer = (thing: string | anchor.web3.PublicKey | Buffer): Buffer => {
+    if (Buffer.isBuffer(thing)) return thing;
     if (typeof thing === 'string') return Buffer.from(thing);
     return thing.toBuffer();
 };

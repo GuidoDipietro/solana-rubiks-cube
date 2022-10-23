@@ -2,6 +2,7 @@
 
 /// For PDAs
 pub const CUBE_TAG: &str = "CUBE";
+pub const SPONSOR_TAG: &str = "SPONSOR";
 
 // Permutation vectors + Orientation masks
 
