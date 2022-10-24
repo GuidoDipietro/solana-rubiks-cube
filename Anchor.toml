@@ -2,7 +2,7 @@
 seeds = true
 skip-lint = false
 [programs.localnet]
-cube = "aJQboVi8BRg98ZYLkyun59madrxWjP3tpscvZ6jKmMU"
+cube = "8svjuExT5ko3asB3zJjcajE8LJ5pvjcJpc3njWAKu6dK"
 
 [registry]
 url = "https://api.apr.dev"

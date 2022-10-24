@@ -16,18 +16,18 @@ Check the file `client/cube-client.ts` to see the whole SDK.
 
 # Running
 
-Install [NodeJS and Yarn](https://classic.yarnpkg.com/lang/en/docs/install), [Anchor](https://book.anchor-lang.com/getting_started/installation.html), and generate a Solana keypair if you don't already have one.
+Install [NodeJS and Yarn](https://classic.yarnpkg.com/lang/en/docs/install), and generate a Solana keypair if you don't already have one.  
+Optionally install [Anchor](https://book.anchor-lang.com/getting_started/installation.html) to run the tests.
 
-To check if you have one run `solana-keygen pubkey ~/.config/solana/id.json`.  
+To check if you have a keypair, run `solana-keygen pubkey ~/.config/solana/id.json`.  
 If you don't have one generate it with `solana-keygen new --outfile ~/.config/solana/id.json`.
 
-To interact with this program, run `yarn install`, edit the file in `tests/devnet-cube.ts` and run it using the following command:
+To interact with this program:
 
-```
-ANCHOR_WALLET=path/to/wallet/id.json yarn run ts-mocha tests/devnet-cube.ts
-```
-
-Note that `path/to/wallet/id.json` will be `~/.config/solana/id.json` if you just generated the Keypair a moment ago.
+-   Run `yarn install`
+-   Configure your CLI to use Devnet with `solana config set --url devnet`
+-   Edit the file in `play/devnet-cube.ts` (some examples provided)
+-   Play with `yarn play`
 
 Have fun!
 

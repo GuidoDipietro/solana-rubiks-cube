@@ -5,16 +5,27 @@ use anchor_lang::prelude::*;
 use crate::{state::*, error::Error, moves::*};
 
 #[derive(Accounts)]
-pub struct PeekCube {}
+pub struct PeekCube {
+    // remaining accounts:
+    // cube: Account<'info, Cube>,
+}
 
-pub fn handler(_ctx: Context<PeekCube>, move_string: String) -> Result<Cube> {
-    // Grab a solved cube
-    let cube: &mut Cube = &mut Cube {
-        co: [0,0,0,0,0,0,0,0],
-        cp: [1,2,3,4,5,6,7,8],
-        eo: [0,0,0,0,0,0,0,0,0,0,0,0],
-        ep: [1,2,3,4,5,6,7,8,9,10,11,12],
-    };
+pub fn handler(ctx: Context<PeekCube>, move_string: String) -> Result<Cube> {
+    // Check if there is a cube in remaining accounts, otherwise use a solved one
+    let cube_account = ctx.remaining_accounts.iter().next();
+
+    let mut cube = 
+        if let Some(_cube_account) = cube_account {
+            Account::<Cube>::try_from(_cube_account)?.into_inner()
+        }
+        else {
+            Cube {
+                co: [0,0,0,0,0,0,0,0],
+                cp: [1,2,3,4,5,6,7,8],
+                eo: [0,0,0,0,0,0,0,0,0,0,0,0],
+                ep: [1,2,3,4,5,6,7,8,9,10,11,12],
+            }
+        };
 
     // Iterate through every move and apply it if valid
     let moves: SplitWhitespace = move_string.split_whitespace();

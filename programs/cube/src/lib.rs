@@ -8,7 +8,7 @@ pub mod moves;
 
 use crate::{instructions::*, state::*};
 
-declare_id!("aJQboVi8BRg98ZYLkyun59madrxWjP3tpscvZ6jKmMU");
+declare_id!("8svjuExT5ko3asB3zJjcajE8LJ5pvjcJpc3njWAKu6dK");
 
 #[program]
 pub mod cube {

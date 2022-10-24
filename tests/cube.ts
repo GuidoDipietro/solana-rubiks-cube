@@ -119,6 +119,32 @@ describe(`cube`, () => {
         assert.ok(sponsorData_struct.totalFund.eq(PRIZE));
     });
 
+    it(`Can peek an existing cube`, async () => {
+        // Call method and grab return
+        const peekedCube = (await program.methods
+            .peekCube(
+                `R' U' F R' B' L2 F2 L D2 L D2 R' B2 D F2 R2 D2 R U B F' U' R U2 L' D' U' R' U' F`
+            )
+            .accounts({})
+            .remainingAccounts([
+                {
+                    pubkey: cube,
+                    isSigner: false,
+                    isWritable: false,
+                },
+            ])
+            .view()) as anchor.IdlTypes<Cube>;
+
+        const expectedPeekedCube = (await program.methods
+            .peekCube(
+                `R' U' F R' B' L2 F2 L D2 L D2 R' B2 D F2 R2 D2 R U B F' U' R U2 L' D' U' R' U' F R' U' F R' B' L2 F2 L D2 L D2 R' B2 D F2 R2 D2 R U B F' U' R U2 L' D' U' R' U' F`
+            )
+            .accounts({})
+            .view()) as anchor.IdlTypes<Cube>;
+
+        assert.deepEqual(peekedCube, expectedPeekedCube);
+    });
+
     it(`Creates another scrambled cube`, async () => {
         // Call method
         const sponsor_BALANCE_I: number = await provider.connection.getBalance(
