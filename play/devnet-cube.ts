@@ -6,8 +6,8 @@ const main = async () => {
     // Add your code here on:
 
     const cube = await programSDK.peekCube(
-        `R'`,
-        `E3pySgNcQ1e4U6fD1oUxt5VCytSu7Q2W5zAYLcVK5gXG`
+        `R`,
+        `B2Z5dpipr4VBAEdHiJz2pkYGwaNhHm19H12k3LNZFSrw`
     );
     console.log(`\n\nPeeked cube: `, cube);
 
@@ -16,8 +16,8 @@ const main = async () => {
     console.log(`\n\nWinners: `, await programSDK.getWinners());
 
     await programSDK.trySolution(
-        `E3pySgNcQ1e4U6fD1oUxt5VCytSu7Q2W5zAYLcVK5gXG`,
-        `R U R' U'`
+        `B2Z5dpipr4VBAEdHiJz2pkYGwaNhHm19H12k3LNZFSrw`,
+        `R F L D' B' U'`
     );
 };
 
