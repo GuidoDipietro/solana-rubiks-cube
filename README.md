@@ -41,7 +41,7 @@ Which challenges are there still ongoing?
 
 Can you create a challenge yourself?
 
-Can you solve any of the existing challenges?
+**Can you solve any of the existing challenges?**
 
 Who earnt the most tokens by solving challenges so far?
 
@@ -66,3 +66,10 @@ Examples:
 
 Due to the limited computational units, `trySolution()` reverts with move sequences of above ~300 moves unless an increase request is sent in the same transaction.  
 Anyway, [300 is plenty](https://cube20.org/).
+
+# Resources
+
+-   [CSTimer](https://cstimer.net/)
+-   [CubeExplorer](http://kociemba.org/cube.htm)
+-   [Nissy](https://nissy.tronto.net/)
+-   [Original blog post in Algorand](https://blog.coinfabrik.com/blockchain/how-to-model-a-rubiks-cube-in-algorands-teal/)

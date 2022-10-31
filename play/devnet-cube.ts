@@ -17,7 +17,8 @@ const main = async () => {
 
     await programSDK.trySolution(
         `B2Z5dpipr4VBAEdHiJz2pkYGwaNhHm19H12k3LNZFSrw`,
-        `R F L D' B' U'`
+        `R F R' U2 L' D`,
+        `Your Name`
     );
 };
 

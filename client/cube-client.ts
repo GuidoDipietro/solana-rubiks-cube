@@ -120,7 +120,8 @@ export class CubeSDK {
      */
     trySolution = async (
         challenge: anchor.web3.PublicKey | string,
-        moves: string
+        moves: string,
+        name: string
     ): Promise<string> => {
         const challengePubkey =
             typeof challenge === `string`
@@ -130,7 +131,7 @@ export class CubeSDK {
         let txSig: string;
         try {
             txSig = await this.program.methods
-                .trySolution(moves)
+                .trySolution(moves, name)
                 .accounts({
                     cuber: this.provider.wallet.publicKey,
                     cube: challengePubkey,
@@ -253,7 +254,9 @@ export class CubeSDK {
     getWinners = async () => {
         return (await this.program.account.winner.all()).map((winner) => {
             return {
-                winner: winner.account.winner.toBase58(),
+                winner: `${
+                    winner.account.name
+                } (${winner.account.winner.toBase58()})`,
                 challengesWon: winner.account.challengesWon.toString(),
                 cashedPrize: winner.account.cashedPrize.toString(),
             };

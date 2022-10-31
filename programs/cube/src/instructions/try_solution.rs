@@ -27,7 +27,15 @@ pub struct TrySolution<'info> {
     pub system_program: Program<'info, System>,
 }
 
-pub fn handler(ctx: Context<TrySolution>, move_string: String) -> Result<()> {
+pub fn validate(name: &String) -> Result<()> {
+    if name.len() > 100 {
+        return Err(error!(Error::WinnerNameTooLong));
+    }
+
+    Ok(())
+}
+
+pub fn handler(ctx: Context<TrySolution>, move_string: String, name: String) -> Result<()> {
     // Get cube
     let cube: &mut Account<Cube> = ctx.accounts.cube.borrow_mut();
 
@@ -70,6 +78,7 @@ pub fn handler(ctx: Context<TrySolution>, move_string: String) -> Result<()> {
     }
     winner.challenges_won += 1;
     winner.cashed_prize += ctx.accounts.cube.to_account_info().lamports();
+    winner.name = name;
 
     Ok(())
 }

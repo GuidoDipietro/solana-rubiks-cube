@@ -56,11 +56,13 @@ pub struct Winner {
     pub winner: Pubkey,
     pub challenges_won: u64,
     pub cashed_prize: u64,
+    pub name: String,
 }
 impl Winner {
     pub const LEN: usize =
         8 +             // Discriminator
         32 +            // One Pubkey
-        2 * 8           // Two u64
+        2 * 8 +         // Two u64
+        100             // Name max length
     ;
 }

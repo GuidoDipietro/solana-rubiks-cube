@@ -238,7 +238,7 @@ describe(`cube`, () => {
     it(`Reverts if move sequence has invalid moves`, async () => {
         try {
             await program.methods
-                .trySolution(`hi`)
+                .trySolution(`hi`, `hi`)
                 .accounts({ cuber: cuber.publicKey, cube })
                 .signers([cuber])
                 .rpc();
@@ -253,7 +253,7 @@ describe(`cube`, () => {
     it(`Reverts if cube is attempted to be solved with an incorrect sequence`, async () => {
         try {
             await program.methods
-                .trySolution(`R U R' D F2 B2`)
+                .trySolution(`R U R' D F2 B2`, `hi`)
                 .accounts({ cuber: cuber.publicKey, cube })
                 .signers([cuber])
                 .rpc();
@@ -273,7 +273,8 @@ describe(`cube`, () => {
         // Call method
         await program.methods
             .trySolution(
-                `D F' L' F U B' U2 F D2 L D2 R2 L2 F2 D L2 F2 U' R2 F2 B2 D'`
+                `D F' L' F U B' U2 F D2 L D2 R2 L2 F2 D L2 F2 U' R2 F2 B2 D'`,
+                `Guido`
             )
             .accounts({
                 cuber: cuber.publicKey,
@@ -302,6 +303,7 @@ describe(`cube`, () => {
         );
         assert.ok(winner_struct.challengesWon.eq(new anchor.BN(1)));
         assert.ok(winner_struct.cashedPrize.eq(PRIZE.add(CUBE_RENT)));
+        assert.equal(winner_struct.name, `Guido`);
     });
 
     it(`Solves another cube`, async () => {
@@ -312,7 +314,8 @@ describe(`cube`, () => {
         // Call method
         await program.methods
             .trySolution(
-                `D F' L' F U B' U2 F D2 L D2 R2 L2 F2 D L2 F2 U' R2 F2 B2 D'`
+                `D F' L' F U B' U2 F D2 L D2 R2 L2 F2 D L2 F2 U' R2 F2 B2 D'`,
+                `Ben`
             )
             .accounts({
                 cuber: cuber.publicKey,
@@ -345,5 +348,6 @@ describe(`cube`, () => {
                 PRIZE.add(CUBE_RENT).mul(new anchor.BN(2))
             )
         );
+        assert.equal(winner_struct.name, `Ben`);
     });
 });

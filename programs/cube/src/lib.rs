@@ -22,8 +22,9 @@ pub mod cube {
     }
 
     /// Tries a move sequence and if it solves the cube, cashes the prize
-    pub fn try_solution(ctx: Context<TrySolution>, move_string: String) -> Result<()> {
-        try_solution::handler(ctx, move_string)
+    #[access_control(try_solution::validate(&name))]
+    pub fn try_solution(ctx: Context<TrySolution>, move_string: String, name: String) -> Result<()> {
+        try_solution::handler(ctx, move_string, name)
     }
 
     /// Applies a sequence of moves to a solved cube to see how it looks like
