@@ -14,6 +14,7 @@ export class CubeSDK {
             `https://api.devnet.solana.com`,
             { commitment: `confirmed` }
         );
+
         const provider = new anchor.AnchorProvider(
             connection,
             anchor.Wallet.local(),
@@ -29,7 +30,7 @@ export class CubeSDK {
             JSON.parse(
                 require(`fs`).readFileSync(`target/idl/cube.json`, `utf-8`)
             ),
-            `8svjuExT5ko3asB3zJjcajE8LJ5pvjcJpc3njWAKu6dK`
+            `7NC47b5iTmCFxW1JpqmKjrn6rPfzrGJ2zjcnqTh7nqbC`
         );
     }
 

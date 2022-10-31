@@ -14,12 +14,15 @@ pub struct Cube {
     pub eo: [u8; 12],
     /// Edge permutation vector
     pub ep: [u8; 12],
+    /// Creator
+    pub creator: Pubkey,
 }
 impl Cube {
     pub const LEN: usize =
         8 +             // Discriminator
         2 * (1 * 8) +   // Two [u8; 8]
-        2 * (1 * 12)    // Two [u8; 12]
+        2 * (1 * 12) +  // Two [u8; 12]
+        32              // Creator
     ;
 }
 
@@ -65,4 +68,10 @@ impl Winner {
         2 * 8 +         // Two u64
         100             // Name max length
     ;
+}
+
+/// Admin state
+#[account]
+pub struct AdminState {
+    pub admin: Pubkey
 }

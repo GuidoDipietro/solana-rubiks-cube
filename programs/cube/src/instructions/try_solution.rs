@@ -24,6 +24,12 @@ pub struct TrySolution<'info> {
     )]
     pub cube: Account<'info, Cube>,
 
+    #[account(
+        seeds = ["ADMIN".as_ref()],
+        bump,
+    )]
+    pub admin_state: Account<'info, AdminState>,
+
     pub system_program: Program<'info, System>,
 }
 
@@ -76,8 +82,10 @@ pub fn handler(ctx: Context<TrySolution>, move_string: String, name: String) -> 
     if winner.challenges_won == 0 {
         winner.winner = ctx.accounts.cuber.key();
     }
-    winner.challenges_won += 1;
-    winner.cashed_prize += ctx.accounts.cube.to_account_info().lamports();
+    if ctx.accounts.admin_state.admin == cube.creator {
+        winner.challenges_won += 1;
+        winner.cashed_prize += ctx.accounts.cube.to_account_info().lamports();
+    }
     winner.name = name;
 
     Ok(())

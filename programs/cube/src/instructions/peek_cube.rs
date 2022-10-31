@@ -24,6 +24,7 @@ pub fn handler(ctx: Context<PeekCube>, move_string: String) -> Result<Cube> {
                 cp: [1,2,3,4,5,6,7,8],
                 eo: [0,0,0,0,0,0,0,0,0,0,0,0],
                 ep: [1,2,3,4,5,6,7,8,9,10,11,12],
+                creator: Pubkey::default(),
             }
         };
 

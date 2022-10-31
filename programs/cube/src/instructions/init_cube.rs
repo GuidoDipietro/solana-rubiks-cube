@@ -49,6 +49,7 @@ pub fn handler(ctx: Context<InitCube>, sponsor_name: String, sponsor_desc: Strin
     new_cube.cp = cube.cp;
     new_cube.eo = cube.eo;
     new_cube.ep = cube.ep;
+    new_cube.creator = ctx.accounts.sponsor.key();
 
     // Create or update sponsor
     let sponsor_data = &mut ctx.accounts.sponsor_data;
