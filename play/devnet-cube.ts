@@ -13,8 +13,8 @@ const main = async () => {
     console.log(`\n\nWinners: `, await programSDK.getWinners());
 
     await programSDK.trySolution(
-        `6Cmr6cmhyZQGsQCGSUDpecyFMZezmJz5NJtPBaicb1AK`,
-        `R F R' D2 D2 R F' R'`,
+        `BdiFbgf1VAEydfc4q8R795re34SPeWymZzLR7ZAhbAUq`,
+        `R F R' D2`,
         `Your Name`
     );
 };
