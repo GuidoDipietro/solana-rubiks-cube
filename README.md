@@ -17,14 +17,14 @@ Check the file `client/cube-client.ts` to see the whole SDK.
 # Running
 
 Install [NodeJS and Yarn](https://classic.yarnpkg.com/lang/en/docs/install), and generate a Solana keypair if you don't already have one.  
-Optionally install [Anchor](https://book.anchor-lang.com/getting_started/installation.html) to run the tests.
+Optionally install [Anchor](https://www.anchor-lang.com/docs/installation) to run the tests.
 
 To check if you have a keypair, run `solana-keygen pubkey ~/.config/solana/id.json`.  
 If you don't have one generate it with `solana-keygen new --outfile ~/.config/solana/id.json`.
 
 To interact with this program:
 
--   Run `yarn install`
+-   Run `yarn; yarn add ts-mocha`
 -   Configure your CLI to use Devnet with `solana config set --url devnet`
 -   Edit the file in `play/devnet-cube.ts` (some examples provided)
 -   Play with `yarn play`
